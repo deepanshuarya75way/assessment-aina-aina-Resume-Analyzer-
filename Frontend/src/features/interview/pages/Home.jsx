@@ -8,14 +8,30 @@ const Home = () => {
     const { loading, generateReport,reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
+    const [resumeText, setResumeText] = useState("");
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
     const handleGenerateReport = async () => {
         const resumeFile = resumeInputRef.current.files[ 0 ]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+        let data;
+        if(resumeFile){
+            data = await generateReport({ jobDescription, selfDescription, resumeFile })
+        }
+        else{
+            const response=await fetch('/api/interview/update-analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({jobDescription, selfDescription,resumeText})
+        });
+        const resData = await response.json();
+        data = resData.data;
+        }
+        
+        if (data && data._id) {
+            navigate(`/interview/${data._id}`)
+        }
     }
 
     if (loading) {
@@ -87,6 +103,18 @@ const Home = () => {
 
                         {/* OR Divider */}
                         <div className='or-divider'><span>OR</span></div>
+                        {/* Manual Resume Text Input Field */}
+                        <div className='manual-resume-section' style={{ marginBottom: '15px'}}>
+                            <label className='section-label' style={{fontweight: 'bold', display: 'block', marginBottom: '5px'}}>
+                                Or Paste/Refine Your Resume Text Directly:
+                            </label>
+                            <textarea
+                                onChange={(e)=> setResumeText(e.target.value)}
+                                value={resumeText}
+                                className='panel__textarea panel__textarea--short'
+                                placeholder="Type or paste your complete resume textprofile metrics directly here..."
+                                />
+                        </div>
 
                         {/* Quick Self-Description */}
                         <div className='self-description'>
