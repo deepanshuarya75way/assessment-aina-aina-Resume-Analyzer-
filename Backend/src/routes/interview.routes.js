@@ -38,5 +38,16 @@ interviewRouter.get("/", authMiddleware.authUser, interviewController.getAllInte
 interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, interviewController.generateResumePdfController)
 
 
+/**
+ * @route POST/api/interview/update-analyze
+ * @description update resume text content and re-generate evaluation metrics
+ * @access private
+ */
+interviewRouter.post(
+  "/update-analyze",
+  authMiddleware.authUser,
+  interviewController.UpdateResumeContentController
+);
+
 
 module.exports = interviewRouter
