@@ -95,4 +95,36 @@ async function generateResumePdfController(req, res) {
     res.send(pdfBuffer)
 }
 
-module.exports = { generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController }
+async function UpdateResumeContentController(req, res) {
+    try{
+        const {resumeText,selfDescription, jobDescription}=req.body;
+
+        if(!resumeText){
+            return res.status(400).json({success: false, error: "Resume text content cannot ne empty"});
+        }
+        //call the AI generator directly with the ra manually-edited textstring
+        const interviewReportByAi = await generateInterviewReport(
+            resumeText,
+            selfDescription,
+            jobDescription
+        );
+
+        //Store the text version directly to thedatabase
+        const interviewReport = await interviewReportModel.create({
+            user:req.user.id,
+            resume: resumeText,
+            selfDescription,
+            jobDescription,
+            ...interviewReportByAi
+        });
+
+        return res.status(500).json({
+            success: true,
+            message: "Resume updatesand re-analysed successfully!",
+            data: interviewReport
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+}
+module.exports = { generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController, UpdateResumeContentController }
