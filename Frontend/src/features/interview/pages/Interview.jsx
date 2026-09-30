@@ -233,3 +233,4 @@ const Interview = () => {
          </div> 
 
 export default Interview
+//MONGO_URI="mongodb://127.0.0.1:27017/resume_analyzer" MONGODB_URI="mongodb://127.0.0.1:27017/resume_analyzer" GEMINI_API_KEY=""AIzaSyDummyKeyForTesting" npm run dev
