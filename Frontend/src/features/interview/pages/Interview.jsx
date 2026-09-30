@@ -35,7 +35,47 @@ const QuestionCard = ({ item, index }) => {
                     </div>
                 </div>
             )}
+
+
+            {/*---FOLLOW-UP QUESTIONS INTERACTION SECTION---*/}
+            <div className="follow-up-container" style={{ marginTop: '30px', padding: '20px', borderTop: '2px solid #e5e7eb', background: '#f9fafb', borderRadius: '8px'}}>
+                <h3 style={{ fontsize: '1.25rem', fontWeight: 'bold', marginBottom; '15px', color: '#1f2937' }}>
+                    Ask Follo-up Questions About Your Report
+                </h3>
+
+                {/* Chat History Messages Stream View Panel */}
+                <div className="chat-history" style={{maxHeight: '250px', overflowY: 'auto', marginBottom: '15px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {/* Local thread iteration placeholder state display arraya */}
+                <div style={{ background: '#eff6ff', padding: '12px', borderRadius: '6px', borderLeft: '4px solid #2563eb'}}>
+                    <p style={{ fontWeight: 'bold', fontSize: '0.875rem', margin: '0 0 4px 0', color: '#1e40af' }}>AI Context Advisor:</p>
+                    <p style={{ margin: 0; fontSize: '0.95rem' }}>You can ask me to expand on any skill gap or structural improvement bullet point listed above!</p>
+                    </div>
+                </div>
+
+                {/* Form Control Input Workspace Area */}
+                <div style={{ display: 'flex', gap: '10px'}}>
+                    <input
+                    type="text"
+                    placeholder="Type your Specific follow-up question here (e.g., 'How can I highlight my system design skills?')..."
+                    style={{ flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #d1d5db', fontSize: '0.95rem' }}
+                    id="followUpInput"
+                />
+                <button
+                onClick={async () => {
+                    const inputE1 = document.getElemenetById('followUpInput');
+                    const questionText = inputE1.value.trim();
+                    if(!questionText) return;
+
+                    //Simulating the structural client action post query pipeline
+                    alert(`Submitting Question: "${questionText}"\nAnalyzing text parameters against report context metrics...`);
+                    inputE1.value = '';
+                }}
+                style={{ background: '#2563eb', color: '#ffffff', padding:'10px 20px', borderRadius: '6px', border: 'none', fontWeight: 'bold',cursor: 'pointer'}}
+                >
+                    Ask AI
+                </button>
         </div>
+    </div>
     )
 }
 
