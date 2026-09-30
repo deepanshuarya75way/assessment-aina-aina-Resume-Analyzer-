@@ -37,6 +37,7 @@ interviewRouter.get("/", authMiddleware.authUser, interviewController.getAllInte
  */
 interviewRouter.post("/resume/pdf/:interviewReportId", authMiddleware.authUser, interviewController.generateResumePdfController)
 
+//Route to handle dynamic context-based follow-uo questions
+interviewRouter.post("/follow-up", authMiddleware.authUser, interviewController.askFollowUpQuestionController);
 
-
-module.exports = interviewRouter
+module.exports = interviewRouter;
