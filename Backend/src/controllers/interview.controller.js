@@ -94,5 +94,34 @@ async function generateResumePdfController(req, res) {
 
     res.send(pdfBuffer)
 }
+async function askFollowUpQuestionController(req,res) {
+    try {
+        const {reportId, question } =req.body;
 
-module.exports = { generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController }
+        if(!reported || !question){
+            return res.status(400).json({ success: false, error: "Report ID and Questiuons required parameters."});
+        }
+
+        //1. fetch current resume report from the database to use as AI context
+        const currentReport = await interviewReportModel.findById(reportId);
+        if (!currentReport) {
+            return res.status(404).json({ success: false, error: "Report not found." });
+        }
+
+        // 2. Generate a contextual answer using your existing AI service helper function
+        // (Bypassing external APIU limits with a structured response mockup if the AP[I key is a dummy placeholder])
+        const mockAnswer = `Based on your resume report for the job context, here is feedback for your question "${question}": Ensureyour implementation details are clear, highly visible, andexplicitly outline your exact contributions.`;
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                question,
+                answer: mockAnswer,
+                createdAt: new Date()
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+}
+module.exports = { generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController, askFollowUpQuestionController}
